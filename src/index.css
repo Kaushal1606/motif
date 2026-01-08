@@ -4,50 +4,57 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 2%;
+    --foreground: 40 20% 96%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 5%;
+    --card-foreground: 40 20% 96%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 40 20% 96%;
 
-    --primary: 18 100% 60%;
+    --primary: 28 85% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 56% 24%;
+    --secondary: 195 65% 35%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 220 9% 66%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 200 10% 55%;
 
-    --accent: 18 100% 54%;
+    --accent: 32 90% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 18 100% 60%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 28 85% 55%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom Motif tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(18 100% 60%), hsl(36 94% 54%));
-    --gradient-secondary: linear-gradient(135deg, hsl(213 56% 24%), hsl(205 70% 41%));
-    --glow-primary: 0 0 40px hsl(18 100% 60% / 0.3);
-    --glow-secondary: 0 0 40px hsl(213 56% 24% / 0.3);
+    /* Custom Motif tokens - Amber to Teal gradient palette */
+    --amber: 28 85% 55%;
+    --amber-glow: 32 90% 50%;
+    --teal: 195 65% 35%;
+    --teal-light: 190 60% 50%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(32 90% 55%), hsl(28 85% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(195 65% 35%), hsl(190 60% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(195 50% 40%) 0%, hsl(28 85% 55%) 100%);
+    
+    --glow-amber: 0 0 60px hsl(28 85% 55% / 0.25);
+    --glow-teal: 0 0 60px hsl(195 65% 35% / 0.25);
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 18 100% 60%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 40 20% 96%;
+    --sidebar-primary: 28 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 18 100% 60%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 40 20% 96%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 28 85% 55%;
   }
 }
 
@@ -68,31 +75,52 @@
 
 @layer utilities {
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(18 100% 60%), hsl(36 94% 54%));
+    background: linear-gradient(135deg, hsl(32 90% 55%), hsl(28 85% 45%));
   }
 
   .gradient-secondary {
-    background: linear-gradient(135deg, hsl(213 56% 24%), hsl(205 70% 41%));
+    background: linear-gradient(135deg, hsl(195 65% 35%), hsl(190 60% 50%));
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(195 50% 40%) 0%, hsl(28 85% 55%) 100%);
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, hsl(18 100% 60%), hsl(36 94% 54%));
+    background: linear-gradient(135deg, hsl(32 90% 60%), hsl(195 60% 55%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .glow-primary {
-    box-shadow: 0 0 40px hsl(18 100% 60% / 0.3);
+  .gradient-text-warm {
+    background: linear-gradient(135deg, hsl(32 90% 60%), hsl(28 85% 50%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .glow-secondary {
-    box-shadow: 0 0 40px hsl(213 56% 24% / 0.3);
+  .glow-amber {
+    box-shadow: 0 0 60px hsl(28 85% 55% / 0.25);
+  }
+
+  .glow-teal {
+    box-shadow: 0 0 60px hsl(195 65% 35% / 0.25);
   }
 
   .glass {
-    background: hsl(0 0% 100% / 0.05);
-    backdrop-filter: blur(12px);
+    background: hsl(0 0% 100% / 0.03);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+  }
+
+  .glass-strong {
+    background: hsl(0 0% 100% / 0.06);
+    backdrop-filter: blur(24px);
     border: 1px solid hsl(0 0% 100% / 0.1);
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 }
