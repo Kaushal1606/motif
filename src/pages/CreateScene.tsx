@@ -18,30 +18,23 @@ import { useToast } from "@/hooks/use-toast";
 import { n8nWebhooks } from "@/services/n8nWebhooks";
 import { Loader2, AlertCircle } from "lucide-react";
 
-const visualStyles = ["Realistic", "Cinematic", "Animated", "Stylized"];
+const visualStyles = ["Realistic", "Anime", "Studio Ghibli", "Cyberpunk", "Watercolor"];
 const cameraShots = [
-  "Wide Shot",
-  "Medium Shot",
   "Close-up",
-  "Extreme Close-up",
-  "Over the Shoulder",
-  "POV",
-  "Bird's Eye",
+  "Medium Shot",
+  "Wide Shot",
+  "Over-the-shoulder",
   "Low Angle",
   "High Angle",
-  "Dutch Angle",
+  "Tracking Shot",
 ];
 const moodOptions = [
-  "Dramatic",
-  "Peaceful",
-  "Mysterious",
-  "Energetic",
-  "Romantic",
-  "Tense",
-  "Playful",
-  "Melancholic",
-  "Hopeful",
-  "Dark",
+  "Calm & Peaceful",
+  "Tense & Suspenseful",
+  "Joyful & Uplifting",
+  "Dark & Dramatic",
+  "Mysterious & Ethereal",
+  "Adventurous & Exciting",
 ];
 
 const CreateScene = () => {
