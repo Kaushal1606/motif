@@ -72,7 +72,8 @@ const CreateScene = () => {
       !formData.action ||
       !formData.location ||
       !formData.mood_atmosphere ||
-      !formData.camera_shot
+      !formData.camera_shot ||
+      !formData.visual_style
     ) {
       toast({
         title: "Missing fields",
@@ -92,7 +93,7 @@ const CreateScene = () => {
         location: formData.location,
         mood_atmosphere: formData.mood_atmosphere,
         camera_shot: formData.camera_shot,
-        visual_style: formData.visual_style || "Realistic",
+        visual_style: formData.visual_style,
         user_email: user.email,
       });
 
@@ -256,7 +257,7 @@ const CreateScene = () => {
 
           {/* Visual Style */}
           <div className="space-y-2">
-            <Label htmlFor="visual_style">Visual Style</Label>
+            <Label htmlFor="visual_style">Visual Style *</Label>
             <Select
               value={formData.visual_style}
               onValueChange={(value) =>
@@ -265,7 +266,7 @@ const CreateScene = () => {
               disabled={loading}
             >
               <SelectTrigger id="visual_style">
-                <SelectValue placeholder="Select style (optional)" />
+                <SelectValue placeholder="Select style" />
               </SelectTrigger>
               <SelectContent>
                 {visualStyles.map((style) => (
