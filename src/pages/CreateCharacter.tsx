@@ -17,9 +17,9 @@ import { useToast } from "@/hooks/use-toast";
 import { n8nWebhooks } from "@/services/n8nWebhooks";
 import { Loader2 } from "lucide-react";
 
-const visualStyles = ["Realistic", "Cinematic", "Animated", "Stylized"];
+const visualStyles = ["Realistic", "Anime", "Studio Ghibli", "Cyberpunk", "Watercolor"];
 const genders = ["Male", "Female", "Non-binary", "Other"];
-const ageRanges = ["Child (5-12)", "Teen (13-19)", "Young Adult (20-35)", "Middle Age (36-55)", "Senior (55+)"];
+const ageRanges = ["Child (5-12)", "Teen (13-17)", "Young Adult (18-25)", "Adult (26-40)", "Middle Age (41-60)", "Senior (60+)"];
 
 const CreateCharacter = () => {
   const navigate = useNavigate();
