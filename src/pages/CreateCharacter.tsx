@@ -47,7 +47,7 @@ const CreateCharacter = () => {
       return;
     }
 
-    if (!formData.avatar_name || !formData.user_description || !formData.visual_style) {
+    if (!formData.avatar_name || !formData.user_description || !formData.visual_style || !formData.gender || !formData.age_range) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields.",
@@ -154,7 +154,7 @@ const CreateCharacter = () => {
           {/* Gender & Age */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="gender">Gender</Label>
+              <Label htmlFor="gender">Gender *</Label>
               <Select
                 value={formData.gender}
                 onValueChange={(value) =>
@@ -176,7 +176,7 @@ const CreateCharacter = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="age_range">Age Range</Label>
+              <Label htmlFor="age_range">Age Range *</Label>
               <Select
                 value={formData.age_range}
                 onValueChange={(value) =>
