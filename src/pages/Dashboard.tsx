@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Clapperboard, Video, Plus, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import motifLogo from "@/assets/motif-logo.png";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -17,8 +18,8 @@ const Dashboard = () => {
       {/* Header */}
       <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="text-xl font-semibold tracking-tight">
-            Motif
+          <Link to="/" className="flex items-center">
+            <img src={motifLogo} alt="Motif" className="h-9 w-auto" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">

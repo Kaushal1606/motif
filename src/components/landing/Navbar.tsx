@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import motifLogo from "@/assets/motif-logo.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -11,8 +12,8 @@ const Navbar = () => {
       <div className="container px-4">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5">
-            <span className="text-xl font-semibold tracking-tight">Motif</span>
+          <Link to="/" className="flex items-center gap-2">
+            <img src={motifLogo} alt="Motif" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop nav */}

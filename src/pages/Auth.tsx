@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import motifLogo from "@/assets/motif-logo.png";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -130,7 +131,7 @@ const Auth = () => {
       <div className="w-full max-w-sm relative z-10">
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center mb-8">
-          <span className="text-2xl font-semibold tracking-tight">Motif</span>
+          <img src={motifLogo} alt="Motif" className="h-16 w-auto" />
         </Link>
 
         {/* Auth card */}
