@@ -8,6 +8,12 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Characters from "./pages/Characters";
+import CreateCharacter from "./pages/CreateCharacter";
+import Scenes from "./pages/Scenes";
+import CreateScene from "./pages/CreateScene";
+import SceneDetail from "./pages/SceneDetail";
+import Videos from "./pages/Videos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +33,54 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/characters"
+              element={
+                <ProtectedRoute>
+                  <Characters />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/characters/new"
+              element={
+                <ProtectedRoute>
+                  <CreateCharacter />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/scenes"
+              element={
+                <ProtectedRoute>
+                  <Scenes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/scenes/new"
+              element={
+                <ProtectedRoute>
+                  <CreateScene />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/scenes/:id"
+              element={
+                <ProtectedRoute>
+                  <SceneDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/videos"
+              element={
+                <ProtectedRoute>
+                  <Videos />
                 </ProtectedRoute>
               }
             />
