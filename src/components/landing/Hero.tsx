@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import motifLogo from "@/assets/motif-logo.png";
 
 const Hero = () => {
   return (
@@ -13,20 +12,18 @@ const Hero = () => {
       </div>
 
       <div className="container relative z-10 px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Logo */}
-          <div className="mb-12 animate-fade-in">
-            <img 
-              src={motifLogo} 
-              alt="Motif - Cinematic Storytelling" 
-              className="h-32 md:h-40 lg:h-48 mx-auto"
-            />
+        <div className="max-w-3xl mx-auto text-center">
+          {/* Badge */}
+          <div 
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/50 bg-muted/20 mb-8 animate-fade-in"
+          >
+            <span className="text-xs text-muted-foreground">Cinematic Storytelling</span>
           </div>
 
           {/* Main headline */}
           <h1 
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-6 animate-fade-in text-balance leading-tight"
-            style={{ animationDelay: "0.15s" }}
+            style={{ animationDelay: "0.1s" }}
           >
             Create Cinematic Videos with{" "}
             <span className="gradient-text">Consistent Characters</span>
@@ -34,8 +31,8 @@ const Hero = () => {
 
           {/* Subheadline */}
           <p 
-            className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-12 animate-fade-in leading-relaxed"
-            style={{ animationDelay: "0.3s" }}
+            className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-10 animate-fade-in leading-relaxed"
+            style={{ animationDelay: "0.2s" }}
           >
             Design your character once. Generate unlimited videos. 
             Every scene, same character.
@@ -44,7 +41,7 @@ const Hero = () => {
           {/* CTA buttons */}
           <div 
             className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
-            style={{ animationDelay: "0.45s" }}
+            style={{ animationDelay: "0.3s" }}
           >
             <Button 
               asChild 
@@ -71,7 +68,7 @@ const Hero = () => {
           {/* Style tags */}
           <div 
             className="mt-16 flex flex-wrap items-center justify-center gap-3 animate-fade-in"
-            style={{ animationDelay: "0.6s" }}
+            style={{ animationDelay: "0.4s" }}
           >
             {["Anime", "Realistic", "Studio Ghibli", "Cyberpunk", "Watercolor"].map((style) => (
               <span

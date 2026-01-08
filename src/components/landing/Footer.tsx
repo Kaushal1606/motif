@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import motifLogo from "@/assets/motif-logo.png";
 
 const Footer = () => {
   return (
@@ -6,8 +7,8 @@ const Footer = () => {
       <div className="container px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <Link to="/" className="text-lg font-semibold tracking-tight">
-            Motif
+          <Link to="/" className="flex items-center">
+            <img src={motifLogo} alt="Motif" className="h-8 w-auto opacity-80 hover:opacity-100 transition-opacity" />
           </Link>
 
           {/* Links */}
