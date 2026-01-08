@@ -7,8 +7,9 @@ const Footer = () => {
       <div className="container px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img src={motifLogo} alt="Motif" className="h-8 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+          <Link to="/" className="flex items-center gap-2">
+            <img src={motifLogo} alt="Motif" className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity" />
+            <span className="text-xl font-bold text-white opacity-80 hover:opacity-100 transition-opacity">Motif</span>
           </Link>
 
           {/* Links */}

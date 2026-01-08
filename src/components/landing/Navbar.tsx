@@ -12,8 +12,9 @@ const Navbar = () => {
       <div className="container px-4">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src={motifLogo} alt="Motif" className="h-10 w-auto" />
+          <Link to="/" className="flex items-center gap-3">
+            <img src={motifLogo} alt="Motif" className="h-20 w-auto" />
+            <span className="text-2xl font-bold text-white">Motif</span>
           </Link>
 
           {/* Desktop nav */}
