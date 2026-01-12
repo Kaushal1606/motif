@@ -14,7 +14,7 @@ import {
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { n8nWebhooks } from "@/services/n8nWebhooks";
+import { webhookService } from "@/services/webhookService";
 import { Loader2 } from "lucide-react";
 
 const visualStyles = ["Realistic", "Anime", "Studio Ghibli", "Cyberpunk", "Watercolor"];
@@ -59,13 +59,12 @@ const CreateCharacter = () => {
     setLoading(true);
 
     try {
-      await n8nWebhooks.createAvatar({
+      await webhookService.createAvatar({
         avatar_name: formData.avatar_name,
         user_description: formData.user_description,
         visual_style: formData.visual_style,
         gender: formData.gender,
         age_range: formData.age_range,
-        user_email: user.email,
       });
 
       toast({

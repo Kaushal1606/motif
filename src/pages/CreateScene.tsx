@@ -15,7 +15,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAvatars } from "@/hooks/useAvatars";
 import { useToast } from "@/hooks/use-toast";
-import { n8nWebhooks } from "@/services/n8nWebhooks";
+import { webhookService } from "@/services/webhookService";
 import { Loader2, AlertCircle } from "lucide-react";
 
 const visualStyles = ["Realistic", "Anime", "Studio Ghibli", "Cyberpunk", "Watercolor"];
@@ -86,7 +86,7 @@ const CreateScene = () => {
     setLoading(true);
 
     try {
-      await n8nWebhooks.createScene({
+      await webhookService.createScene({
         avatar_name: formData.avatar_name,
         scene_name: formData.scene_name,
         action: formData.action,
@@ -94,7 +94,6 @@ const CreateScene = () => {
         mood_atmosphere: formData.mood_atmosphere,
         camera_shot: formData.camera_shot,
         visual_style: formData.visual_style,
-        user_email: user.email,
       });
 
       toast({

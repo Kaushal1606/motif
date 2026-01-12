@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Characters from "./pages/Characters";
+import CharacterDetail from "./pages/CharacterDetail";
 import CreateCharacter from "./pages/CreateCharacter";
 import Scenes from "./pages/Scenes";
 import CreateScene from "./pages/CreateScene";
@@ -49,6 +50,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <CreateCharacter />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/characters/:id"
+              element={
+                <ProtectedRoute>
+                  <CharacterDetail />
                 </ProtectedRoute>
               }
             />

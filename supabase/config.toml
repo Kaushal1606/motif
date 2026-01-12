@@ -1,1 +1,10 @@
 project_id = "rrblrtiowqlendbfqyvz"
+
+[functions.create-avatar]
+verify_jwt = false
+
+[functions.create-scene]
+verify_jwt = false
+
+[functions.manage-scene]
+verify_jwt = false
