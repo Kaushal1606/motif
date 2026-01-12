@@ -1,14 +1,41 @@
 import { Button } from "@/components/ui/button";
-import { Video, Play } from "lucide-react";
+import { Video, Play, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useVideos } from "@/hooks/useVideos";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 const Videos = () => {
   const { videos, loading } = useVideos();
+  const { toast } = useToast();
 
+  const handleDownload = async (videoUrl: string, videoId: string) => {
+    try {
+      const response = await fetch(videoUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `video_${videoId}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Download started",
+        description: "Your video is being downloaded.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "Failed to download the video. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <DashboardLayout>
       {/* Header */}
@@ -82,7 +109,7 @@ const Videos = () => {
 
               {/* Content */}
               <div className="p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-3">
                   <p className="text-sm text-muted-foreground">
                     {video.duration_seconds ? `${video.duration_seconds}s` : "Processing..."}
                   </p>
@@ -90,6 +117,17 @@ const Videos = () => {
                     {new Date(video.created_at || "").toLocaleDateString()}
                   </p>
                 </div>
+                {video.status === "completed" && video.video_url && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => handleDownload(video.video_url, video.id)}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                )}
               </div>
             </div>
           ))}

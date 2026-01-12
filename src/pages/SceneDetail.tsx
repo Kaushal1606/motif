@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useToast } from "@/hooks/use-toast";
-import { n8nWebhooks } from "@/services/n8nWebhooks";
+import { webhookService } from "@/services/webhookService";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -17,6 +17,7 @@ import {
   Sparkles,
   Clapperboard,
   Play,
+  Download,
 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -121,7 +122,7 @@ const SceneDetail = () => {
     setApproving(true);
 
     try {
-      await n8nWebhooks.approveScene(id);
+      await webhookService.approveScene(id);
       toast({
         title: "Scene approved!",
         description: "Video generation has started. You'll see it appear when ready.",
@@ -142,7 +143,7 @@ const SceneDetail = () => {
     setRejecting(true);
 
     try {
-      await n8nWebhooks.rejectScene(id);
+      await webhookService.rejectScene(id);
       toast({
         title: "Scene rejected",
         description: "This scene has been rejected and will not be processed.",
@@ -155,6 +156,62 @@ const SceneDetail = () => {
       });
     } finally {
       setRejecting(false);
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    if (!scene?.first_frame_url) return;
+
+    try {
+      const response = await fetch(scene.first_frame_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${scene.scene_name.replace(/\s+/g, "_")}_preview.png`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Download started",
+        description: "Your scene preview is being downloaded.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "Failed to download the image. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDownloadVideo = async () => {
+    if (!video?.video_url) return;
+
+    try {
+      const response = await fetch(video.video_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${scene?.scene_name.replace(/\s+/g, "_")}_video.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Download started",
+        description: "Your video is being downloaded.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "Failed to download the video. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -290,6 +347,22 @@ const SceneDetail = () => {
                 </>
               )}
             </div>
+          )}
+        </div>
+
+        {/* Download Buttons */}
+        <div className="flex gap-4 mb-8">
+          {scene.first_frame_url && (
+            <Button onClick={handleDownloadImage} variant="outline">
+              <Download className="w-4 h-4 mr-2" />
+              Download Preview Image
+            </Button>
+          )}
+          {video && video.status === "completed" && video.video_url && (
+            <Button onClick={handleDownloadVideo} variant="outline">
+              <Download className="w-4 h-4 mr-2" />
+              Download Video
+            </Button>
           )}
         </div>
 
