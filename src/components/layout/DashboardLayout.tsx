@@ -22,9 +22,9 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-8 h-24 flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src={motifLogo} alt="Motif" className="h-28 w-auto" />
+            <img src={motifLogo} alt="Motif" className="h-20 w-auto" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -55,7 +55,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-10">{children}</main>
+      <main className="container mx-auto px-8 py-12">{children}</main>
     </div>
   );
 };
