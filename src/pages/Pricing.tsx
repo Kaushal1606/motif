@@ -9,7 +9,7 @@ const pricingPlans = [
   {
     name: "Starter Pack",
     credits: 10,
-    price: 799,
+    price: 899,
     description: "Perfect for trying out",
     features: [
       "10 video generations",
@@ -22,13 +22,13 @@ const pricingPlans = [
   {
     name: "Creator Pack",
     credits: 25,
-    price: 1599,
+    price: 1799,
     description: "Best value for creators",
     features: [
       "25 video generations",
       "All visual styles",
       "Priority support",
-      "Save ₹398",
+      "Save 20%",
     ],
     buttonText: "Buy Creator",
     popular: true,
@@ -36,13 +36,13 @@ const pricingPlans = [
   {
     name: "Studio Pack",
     credits: 60,
-    price: 3199,
+    price: 5399,
     description: "For teams & agencies",
     features: [
       "60 video generations",
       "All visual styles",
       "Priority support",
-      "Save ₹1,591",
+      "Bulk discount",
     ],
     buttonText: "Buy Studio",
     popular: false,
