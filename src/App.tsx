@@ -15,6 +15,7 @@ import Scenes from "./pages/Scenes";
 import CreateScene from "./pages/CreateScene";
 import SceneDetail from "./pages/SceneDetail";
 import Videos from "./pages/Videos";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/auth" element={<Auth />} />
             <Route
               path="/dashboard"
