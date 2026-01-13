@@ -13,10 +13,10 @@ const Dashboard = () => {
   const { scenes } = useScenes();
   const { videos } = useVideos();
 
-  const stats = [
-    { label: "Characters", value: avatars.length, icon: Users },
-    { label: "Scenes", value: scenes.length, icon: Clapperboard },
-    { label: "Videos", value: videos.length, icon: Video },
+const stats = [
+    { label: "Characters", value: avatars.length, icon: Users, path: "/characters" },
+    { label: "Scenes", value: scenes.length, icon: Clapperboard, path: "/scenes" },
+    { label: "Videos", value: videos.length, icon: Video, path: "/videos" },
   ];
 
   return (
@@ -30,9 +30,13 @@ const Dashboard = () => {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         {stats.map((stat) => (
-          <div key={stat.label} className="p-5 rounded-xl border border-border/40 bg-card/30">
+          <Link 
+            key={stat.label} 
+            to={stat.path}
+            className="p-5 rounded-xl border border-border/40 bg-card/30 hover:bg-card/50 hover:border-primary/30 transition-all duration-200 group"
+          >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <stat.icon className="w-5 h-5 text-primary" />
               </div>
               <div>
@@ -40,7 +44,7 @@ const Dashboard = () => {
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
