@@ -58,7 +58,7 @@ const stats = [
               New Character
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm">
+          <Button asChild size="sm" className="gradient-secondary hover:opacity-90">
             <Link to="/scenes/new">
               <Plus className="w-4 h-4 mr-2" />
               New Scene
