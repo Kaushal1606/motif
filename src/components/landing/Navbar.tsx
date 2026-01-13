@@ -19,12 +19,12 @@ const Navbar = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Features
-            </a>
-            <a href="#faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            </Link>
+            <Link to="/#faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               FAQ
-            </a>
+            </Link>
             <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Pricing
             </Link>
@@ -57,20 +57,20 @@ const Navbar = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-border/30">
             <div className="flex flex-col gap-1">
-              <a
-                href="#features"
+              <Link
+                to="/#features"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors py-3 px-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
-              </a>
-              <a
-                href="#faq"
+              </Link>
+              <Link
+                to="/#faq"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors py-3 px-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 FAQ
-              </a>
+              </Link>
               <Link
                 to="/pricing"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors py-3 px-2"
