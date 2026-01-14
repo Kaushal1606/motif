@@ -14,6 +14,7 @@ import {
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useCredits } from "@/hooks/useCredits";
 import { webhookService } from "@/services/webhookService";
 import { Loader2 } from "lucide-react";
 
@@ -25,6 +26,7 @@ const CreateCharacter = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { credits, loading: creditsLoading } = useCredits();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -44,6 +46,16 @@ const CreateCharacter = () => {
         description: "You must be logged in to create a character.",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (credits < 1) {
+      toast({
+        title: "Insufficient credits",
+        description: "You need at least 1 credit to create a character. Please purchase credits.",
+        variant: "destructive",
+      });
+      navigate("/pricing");
       return;
     }
 
@@ -207,9 +219,9 @@ const CreateCharacter = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" className="gradient-primary hover:opacity-90" disabled={loading}>
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Create Character
+            <Button type="submit" className="gradient-primary hover:opacity-90" disabled={loading || creditsLoading}>
+              {(loading || creditsLoading) && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {creditsLoading ? "Checking credits..." : "Create Character"}
             </Button>
           </div>
         </form>

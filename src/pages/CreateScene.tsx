@@ -15,6 +15,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAvatars } from "@/hooks/useAvatars";
 import { useToast } from "@/hooks/use-toast";
+import { useCredits } from "@/hooks/useCredits";
 import { webhookService } from "@/services/webhookService";
 import { Loader2, AlertCircle } from "lucide-react";
 
@@ -42,6 +43,7 @@ const CreateScene = () => {
   const { user } = useAuth();
   const { avatars, loading: avatarsLoading } = useAvatars(true); // Only approved avatars
   const { toast } = useToast();
+  const { credits, loading: creditsLoading } = useCredits();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -63,6 +65,16 @@ const CreateScene = () => {
         description: "You must be logged in to create a scene.",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (credits < 1) {
+      toast({
+        title: "Insufficient credits",
+        description: "You need at least 1 credit to create a scene. Please purchase credits.",
+        variant: "destructive",
+      });
+      navigate("/pricing");
       return;
     }
 
@@ -290,10 +302,10 @@ const CreateScene = () => {
             <Button
               type="submit"
               className="gradient-primary hover:opacity-90"
-              disabled={loading || avatars.length === 0}
+              disabled={loading || avatars.length === 0 || creditsLoading}
             >
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Create Scene
+              {(loading || creditsLoading) && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {creditsLoading ? "Checking credits..." : "Create Scene"}
             </Button>
           </div>
         </form>
