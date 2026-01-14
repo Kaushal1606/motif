@@ -2,14 +2,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const pricingPlans = [
   {
     name: "Starter Pack",
     credits: 10,
     price: 899,
+    amountInPaise: 89900,
     description: "Perfect for trying out",
     features: [
       "10 video generations",
@@ -23,6 +33,7 @@ const pricingPlans = [
     name: "Creator Pack",
     credits: 25,
     price: 1799,
+    amountInPaise: 179900,
     description: "Best value for creators",
     features: [
       "25 video generations",
@@ -37,6 +48,7 @@ const pricingPlans = [
     name: "Studio Pack",
     credits: 60,
     price: 3999,
+    amountInPaise: 399900,
     description: "For teams & agencies",
     features: [
       "60 video generations",
@@ -49,12 +61,58 @@ const pricingPlans = [
   },
 ];
 
-const handlePurchase = (planName: string, amount: number) => {
-  console.log(`Initiating purchase for ${planName} at ₹${amount}`);
-  // Razorpay integration will be added here
-};
-
 const Pricing = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handlePurchase = (planName: string, amountInPaise: number) => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to purchase credits.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    const options = {
+      key: "rzp_live_S3eelPpPIh9u0e",
+      amount: amountInPaise,
+      currency: "INR",
+      name: "Motif",
+      description: "Credit Pack Purchase",
+      prefill: {
+        email: user.email || "",
+      },
+      theme: {
+        color: "#f97316",
+      },
+      handler: function () {
+        toast({
+          title: "Payment successful!",
+          description: "Credits added to your account.",
+        });
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    
+    razorpay.on("payment.failed", function () {
+      toast({
+        title: "Payment failed",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    });
+
+    razorpay.open();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -113,7 +171,7 @@ const Pricing = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    onClick={() => handlePurchase(plan.name, plan.price)}
+                    onClick={() => handlePurchase(plan.name, plan.amountInPaise)}
                     className={`w-full ${
                       plan.popular
                         ? "gradient-primary hover:opacity-90"
