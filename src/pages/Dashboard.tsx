@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Users, Clapperboard, Video, Plus } from "lucide-react";
+import { Users, Clapperboard, Video, Plus, Coins } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAvatars } from "@/hooks/useAvatars";
 import { useScenes } from "@/hooks/useScenes";
 import { useVideos } from "@/hooks/useVideos";
+import { useCredits } from "@/hooks/useCredits";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { avatars } = useAvatars();
   const { scenes } = useScenes();
   const { videos } = useVideos();
+  const { credits, loading: creditsLoading } = useCredits();
 
 const stats = [
     { label: "Characters", value: avatars.length, icon: Users, path: "/characters" },
@@ -22,9 +24,22 @@ const stats = [
   return (
     <DashboardLayout>
       {/* Welcome */}
-      <div className="mb-10">
-        <h1 className="text-2xl font-semibold tracking-tight mb-1">Welcome back</h1>
-        <p className="text-sm text-muted-foreground">{user?.email}</p>
+      <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight mb-1">Welcome back</h1>
+          <p className="text-sm text-muted-foreground">{user?.email}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border/40 bg-card/30">
+            <Coins className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">
+              Credits: {creditsLoading ? "..." : credits}
+            </span>
+          </div>
+          <Button asChild size="sm" variant="outline" className="border-primary/50 hover:bg-primary/10">
+            <Link to="/pricing">Buy Credits</Link>
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
