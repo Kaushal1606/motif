@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Coins } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useCredits } from "@/hooks/useCredits";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 
@@ -65,6 +66,7 @@ const Pricing = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { credits, loading: creditsLoading } = useCredits();
 
   const handlePurchase = (planName: string, amountInPaise: number) => {
     if (!user) {
@@ -126,6 +128,14 @@ const Pricing = () => {
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
               1 credit = 1 video. No subscriptions, pay as you go.
             </p>
+            {user && (
+              <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border/40 bg-card/30">
+                <Coins className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">
+                  Your current balance: {creditsLoading ? "..." : credits} credits
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Pricing Cards */}

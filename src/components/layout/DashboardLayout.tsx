@@ -13,6 +13,7 @@ const navItems = [
   { label: "Characters", path: "/characters" },
   { label: "Scenes", path: "/scenes" },
   { label: "Videos", path: "/videos" },
+  { label: "Pricing", path: "/pricing" },
 ];
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
