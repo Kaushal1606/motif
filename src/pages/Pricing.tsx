@@ -36,18 +36,23 @@ const pricingPlans = [
   {
     name: "Studio Pack",
     credits: 60,
-    price: 5399,
+    price: 3999,
     description: "For teams & agencies",
     features: [
       "60 video generations",
       "All visual styles",
       "Priority support",
-      "Bulk discount",
+      "Best per-video rate",
     ],
     buttonText: "Buy Studio",
     popular: false,
   },
 ];
+
+const handlePurchase = (planName: string, amount: number) => {
+  console.log(`Initiating purchase for ${planName} at ₹${amount}`);
+  // Razorpay integration will be added here
+};
 
 const Pricing = () => {
   return (
@@ -108,6 +113,7 @@ const Pricing = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
+                    onClick={() => handlePurchase(plan.name, plan.price)}
                     className={`w-full ${
                       plan.popular
                         ? "gradient-primary hover:opacity-90"
