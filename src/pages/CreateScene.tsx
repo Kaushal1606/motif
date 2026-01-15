@@ -43,7 +43,7 @@ const CreateScene = () => {
   const { user } = useAuth();
   const { avatars, loading: avatarsLoading } = useAvatars(true); // Only approved avatars
   const { toast } = useToast();
-  const { credits, loading: creditsLoading } = useCredits();
+  const { creditUnits, loading: creditsLoading } = useCredits();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -68,10 +68,10 @@ const CreateScene = () => {
       return;
     }
 
-    if (credits < 1) {
+    if (creditUnits < 10) {
       toast({
         title: "Insufficient credits",
-        description: "You need at least 1 credit to create a scene. Please purchase credits.",
+        description: "You need at least 0.1 credits to create a scene. Please purchase credits.",
         variant: "destructive",
       });
       navigate("/pricing");

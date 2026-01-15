@@ -127,21 +127,21 @@ export type Database = {
       user_credits: {
         Row: {
           created_at: string | null
-          credits: number | null
+          credit_units: number | null
           id: string
           updated_at: string | null
           user_email: string
         }
         Insert: {
           created_at?: string | null
-          credits?: number | null
+          credit_units?: number | null
           id?: string
           updated_at?: string | null
           user_email: string
         }
         Update: {
           created_at?: string | null
-          credits?: number | null
+          credit_units?: number | null
           id?: string
           updated_at?: string | null
           user_email?: string
