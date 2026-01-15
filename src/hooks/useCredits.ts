@@ -4,28 +4,28 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export const useCredits = () => {
   const { user } = useAuth();
-  const [credits, setCredits] = useState<number>(0);
+  const [creditUnits, setCreditUnits] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCredits = async () => {
       if (!user?.email) {
-        setCredits(0);
+        setCreditUnits(0);
         setLoading(false);
         return;
       }
 
       const { data, error } = await supabase
         .from("user_credits")
-        .select("credits")
+        .select("credit_units")
         .eq("user_email", user.email)
         .maybeSingle();
 
       if (error) {
         console.error("Error fetching credits:", error);
-        setCredits(0);
+        setCreditUnits(0);
       } else {
-        setCredits(data?.credits ?? 0);
+        setCreditUnits(data?.credit_units ?? 0);
       }
       setLoading(false);
     };
@@ -33,5 +33,8 @@ export const useCredits = () => {
     fetchCredits();
   }, [user?.email]);
 
-  return { credits, loading };
+  // Return credits (units / 100) for display and raw creditUnits for validation
+  const credits = creditUnits / 100;
+
+  return { credits, creditUnits, loading };
 };

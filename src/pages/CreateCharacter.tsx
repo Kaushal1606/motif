@@ -26,7 +26,7 @@ const CreateCharacter = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
-  const { credits, loading: creditsLoading } = useCredits();
+  const { creditUnits, loading: creditsLoading } = useCredits();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -49,10 +49,10 @@ const CreateCharacter = () => {
       return;
     }
 
-    if (credits < 1) {
+    if (creditUnits < 10) {
       toast({
         title: "Insufficient credits",
-        description: "You need at least 1 credit to create a character. Please purchase credits.",
+        description: "You need at least 0.1 credits to create a character. Please purchase credits.",
         variant: "destructive",
       });
       navigate("/pricing");
