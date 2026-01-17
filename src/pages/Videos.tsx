@@ -1,41 +1,57 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Video, Play, Download } from "lucide-react";
+import { Video, Play, Clock, Calendar, Clapperboard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useVideos } from "@/hooks/useVideos";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+
+type Scene = Tables<"scenes">;
 
 const Videos = () => {
-  const { videos, loading } = useVideos();
-  const { toast } = useToast();
+  const { videos, loading: videosLoading } = useVideos();
+  const [scenes, setScenes] = useState<Record<string, Scene>>({});
+  const [scenesLoading, setScenesLoading] = useState(true);
 
-  const handleDownload = async (videoUrl: string, videoId: string) => {
-    try {
-      const response = await fetch(videoUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `video_${videoId}.mp4`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+  // Fetch all scenes that are associated with videos
+  useEffect(() => {
+    const fetchScenes = async () => {
+      const sceneIds = videos
+        .map((v) => v.scene_id)
+        .filter((id): id is string => id !== null);
 
-      toast({
-        title: "Download started",
-        description: "Your video is being downloaded.",
-      });
-    } catch (error) {
-      toast({
-        title: "Download failed",
-        description: "Failed to download the video. Please try again.",
-        variant: "destructive",
-      });
+      if (sceneIds.length === 0) {
+        setScenesLoading(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from("scenes")
+        .select("*")
+        .in("id", sceneIds);
+
+      if (data) {
+        const sceneMap: Record<string, Scene> = {};
+        data.forEach((scene) => {
+          sceneMap[scene.id] = scene;
+        });
+        setScenes(sceneMap);
+      }
+      setScenesLoading(false);
+    };
+
+    if (!videosLoading && videos.length > 0) {
+      fetchScenes();
+    } else if (!videosLoading) {
+      setScenesLoading(false);
     }
-  };
+  }, [videos, videosLoading]);
+
+  const loading = videosLoading || scenesLoading;
+
   return (
     <DashboardLayout>
       {/* Header */}
@@ -82,55 +98,76 @@ const Videos = () => {
       {/* Videos Grid */}
       {!loading && videos.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              className="group rounded-xl border border-border/40 bg-card/30 overflow-hidden"
-            >
-              {/* Video Player / Thumbnail */}
-              <div className="aspect-video bg-muted/30 relative">
-                {video.status === "completed" && video.video_url ? (
-                  <video
-                    src={video.video_url}
-                    controls
-                    className="w-full h-full object-cover"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center">
-                    <Play className="w-12 h-12 text-muted-foreground/30" />
-                  </div>
-                )}
-                <div className="absolute top-3 right-3">
-                  <StatusBadge status={video.status || "processing"} />
-                </div>
-              </div>
+          {videos.map((video) => {
+            const scene = video.scene_id ? scenes[video.scene_id] : null;
 
-              {/* Content */}
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm text-muted-foreground">
-                    {video.duration_seconds ? `${video.duration_seconds}s` : "Processing..."}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date(video.created_at || "").toLocaleDateString()}
-                  </p>
+            return (
+              <Link
+                key={video.id}
+                to={`/videos/${video.id}`}
+                className="group rounded-xl border border-border/40 bg-card/30 overflow-hidden hover:border-primary/50 transition-colors"
+              >
+                {/* Thumbnail */}
+                <div className="aspect-video bg-muted/30 relative overflow-hidden">
+                  {scene?.first_frame_url ? (
+                    <img
+                      src={scene.first_frame_url}
+                      alt={scene.scene_name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Video className="w-12 h-12 text-muted-foreground/30" />
+                    </div>
+                  )}
+                  {video.status === "completed" && (
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center">
+                        <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="absolute top-3 right-3">
+                    <StatusBadge status={video.status || "processing"} />
+                  </div>
+                  {video.duration_seconds && (
+                    <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                      {video.duration_seconds}s
+                    </div>
+                  )}
                 </div>
-                {video.status === "completed" && video.video_url && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => handleDownload(video.video_url, video.id)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="font-medium mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                    {scene?.scene_name || "Untitled Video"}
+                  </h3>
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>
+                        {video.created_at
+                          ? new Date(video.created_at).toLocaleDateString()
+                          : "—"}
+                      </span>
+                    </div>
+                    {video.duration_seconds && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        <span>{video.duration_seconds}s</span>
+                      </div>
+                    )}
+                  </div>
+                  {scene && (
+                    <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                      <Clapperboard className="w-3 h-3" />
+                      <span className="line-clamp-1">{scene.location}</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </DashboardLayout>
