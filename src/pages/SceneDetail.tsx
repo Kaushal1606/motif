@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -16,13 +16,13 @@ import {
   Camera,
   Sparkles,
   Clapperboard,
-  Play,
   Download,
+  Video,
 } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Scene = Tables<"scenes">;
-type Video = Tables<"videos">;
+type VideoType = Tables<"videos">;
 
 const SceneDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +30,7 @@ const SceneDetail = () => {
   const { toast } = useToast();
 
   const [scene, setScene] = useState<Scene | null>(null);
-  const [video, setVideo] = useState<Video | null>(null);
+  const [video, setVideo] = useState<VideoType | null>(null);
   const [loading, setLoading] = useState(true);
   const [approving, setApproving] = useState(false);
   const [rejecting, setRejecting] = useState(false);
@@ -48,7 +48,7 @@ const SceneDetail = () => {
       if (sceneError) throw sceneError;
       setScene(sceneData);
 
-      // Fetch associated video if scene is approved
+      // Fetch associated video if scene exists
       if (sceneData) {
         const { data: videoData } = await supabase
           .from("videos")
@@ -105,7 +105,7 @@ const SceneDetail = () => {
         },
         (payload) => {
           if (payload.eventType === "INSERT" || payload.eventType === "UPDATE") {
-            setVideo(payload.new as Video);
+            setVideo(payload.new as VideoType);
           }
         }
       )
@@ -125,7 +125,7 @@ const SceneDetail = () => {
       await webhookService.approveScene(id);
       toast({
         title: "Scene approved!",
-        description: "Video generation has started. You'll see it appear when ready.",
+        description: "Video generation has started. Check the Videos page when ready.",
       });
     } catch (error) {
       toast({
@@ -187,34 +187,6 @@ const SceneDetail = () => {
     }
   };
 
-  const handleDownloadVideo = async () => {
-    if (!video?.video_url) return;
-
-    try {
-      const response = await fetch(video.video_url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${scene?.scene_name.replace(/\s+/g, "_")}_video.mp4`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
-      toast({
-        title: "Download started",
-        description: "Your video is being downloaded.",
-      });
-    } catch (error) {
-      toast({
-        title: "Download failed",
-        description: "Failed to download the video. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
   if (loading) {
     return (
       <DashboardLayout>
@@ -248,7 +220,7 @@ const SceneDetail = () => {
   }
 
   const isPending = scene.status === "pending_approval";
-  const isApproved = scene.status === "approved";
+  const hasCompletedVideo = video && video.status === "completed";
 
   return (
     <DashboardLayout>
@@ -308,18 +280,9 @@ const SceneDetail = () => {
           )}
         </div>
 
-        {/* Preview Image / Video */}
+        {/* Preview Image */}
         <div className="aspect-video bg-muted/30 rounded-xl overflow-hidden mb-8 relative">
-          {video && video.status === "completed" && video.video_url ? (
-            <video
-              src={video.video_url}
-              controls
-              className="w-full h-full object-contain bg-black"
-              poster={scene.first_frame_url || undefined}
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) : scene.first_frame_url ? (
+          {scene.first_frame_url ? (
             <>
               <img
                 src={scene.first_frame_url}
@@ -335,22 +298,13 @@ const SceneDetail = () => {
             </>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
-              {isApproved ? (
-                <>
-                  <Loader2 className="w-10 h-10 animate-spin mb-3" />
-                  <p className="text-sm">Processing preview...</p>
-                </>
-              ) : (
-                <>
-                  <Play className="w-12 h-12 mb-3" />
-                  <p className="text-sm">Preview will appear after approval</p>
-                </>
-              )}
+              <Clapperboard className="w-12 h-12 mb-3" />
+              <p className="text-sm">Preview will appear after processing</p>
             </div>
           )}
         </div>
 
-        {/* Download Buttons */}
+        {/* Action Buttons */}
         <div className="flex gap-4 mb-8">
           {scene.first_frame_url && (
             <Button onClick={handleDownloadImage} variant="outline">
@@ -358,10 +312,18 @@ const SceneDetail = () => {
               Download Preview Image
             </Button>
           )}
-          {video && video.status === "completed" && video.video_url && (
-            <Button onClick={handleDownloadVideo} variant="outline">
-              <Download className="w-4 h-4 mr-2" />
-              Download Video
+          {hasCompletedVideo && (
+            <Button asChild className="gradient-primary hover:opacity-90">
+              <Link to={`/videos/${video.id}`}>
+                <Video className="w-4 h-4 mr-2" />
+                View Video
+              </Link>
+            </Button>
+          )}
+          {video && video.status === "processing" && (
+            <Button variant="outline" disabled>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Video Processing...
             </Button>
           )}
         </div>

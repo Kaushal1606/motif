@@ -15,6 +15,7 @@ import Scenes from "./pages/Scenes";
 import CreateScene from "./pages/CreateScene";
 import SceneDetail from "./pages/SceneDetail";
 import Videos from "./pages/Videos";
+import VideoDetail from "./pages/VideoDetail";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
@@ -100,6 +101,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Videos />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/videos/:id"
+        element={
+          <ProtectedRoute>
+            <VideoDetail />
           </ProtectedRoute>
         }
       />
